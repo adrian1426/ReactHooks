@@ -1,24 +1,18 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 
 function App() {
+  const [esActivo, setActivo] = useState(false);
 
-  const [click,setClick] = useState(0);
-
-  const addClick = () =>{
-    setClick(click + 1)
-  }
+  const toggle = () => {
+    setActivo(!esActivo);
+  };
 
   return (
     <div className="App">
-      <button 
-        onClick={addClick}
-      >
-        Clicks ({click}) 
-      </button>
+      <button onClick={toggle}>{esActivo ? 'Desactivar' : 'Activar'}</button>
     </div>
   );
-
 }
 
 export default App;
