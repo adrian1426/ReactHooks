@@ -1,36 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [state, setState] = useState({
-    click: 0,
-    descripcion: '',
+  const [click, setClick] = useState(0);
+
+  useEffect(() => {
+    console.log('dentro de useEffet, ', click);
+    console.log('%c-----------------------------', 'color:green');
+    return () => {
+      //componentWillUnmount
+      console.log('return de useEffect: ', click);
+    };
   });
 
-  const mergeEstado = nextState => {
-    setState({
-      ...state,
-      ...nextState,
-    });
-  };
-
   const handleClick = () => {
-    mergeEstado({
-      click: state.click + 1,
-    });
-  };
-
-  const onChange = e => {
-    mergeEstado({
-      descripcion: e.target.value,
-    });
+    setClick(click + 1);
   };
 
   return (
     <div className="App">
-      <button onClick={handleClick}>Click {state.click}</button>
-      <input type="text" onChange={onChange} />
-      <label>{state.descripcion}</label>
+      <button onClick={handleClick}>Click {click}</button>
     </div>
   );
 }
