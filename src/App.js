@@ -2,25 +2,17 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [num, setNum] = useState(0);
-  const [emoji, setEmoji] = useState('emoji');
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    alert('useEffect');
-  }, [num]);
-
-  const addNum = () => setNum(num + 1);
-
-  const toggleEmogi = () => {
-    const nextEmoji = emoji === 'emoji' ? 'emoji2' : 'emoji';
-    setEmoji(nextEmoji);
-  };
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(users => setUsers(users));
+  }, []);
 
   return (
     <div className="App">
-      <button onClick={addNum}>ADD ({num})</button>
-      <button onClick={toggleEmogi}>Alter emoji</button>
-      <label>{emoji}</label>
+      <button>ADD</button>
     </div>
   );
 }
