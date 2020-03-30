@@ -2,26 +2,25 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
-  const handleMove = e => {
-    setMouseX(e.clientX);
-    setMouseY(e.clientY);
-  };
+  const [num, setNum] = useState(0);
+  const [emoji, setEmoji] = useState('emoji');
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMove);
-    };
-  });
+    alert('useEffect');
+  }, [num]);
+
+  const addNum = () => setNum(num + 1);
+
+  const toggleEmogi = () => {
+    const nextEmoji = emoji === 'emoji' ? 'emoji2' : 'emoji';
+    setEmoji(nextEmoji);
+  };
 
   return (
     <div className="App">
-      <label>
-        X: {mouseX} | Y: {mouseY}
-      </label>
+      <button onClick={addNum}>ADD ({num})</button>
+      <button onClick={toggleEmogi}>Alter emoji</button>
+      <label>{emoji}</label>
     </div>
   );
 }
