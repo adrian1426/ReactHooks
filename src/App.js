@@ -2,15 +2,35 @@ import React, {useState} from 'react';
 import './App.css';
 
 function App() {
-  const [esActivo, setActivo] = useState(false);
+  const [state, setState] = useState({
+    click: 0,
+    descripcion: '',
+  });
 
-  const toggle = () => {
-    setActivo(!esActivo);
+  const mergeEstado = nextState => {
+    setState({
+      ...state,
+      ...nextState,
+    });
+  };
+
+  const handleClick = () => {
+    mergeEstado({
+      click: state.click + 1,
+    });
+  };
+
+  const onChange = e => {
+    mergeEstado({
+      descripcion: e.target.value,
+    });
   };
 
   return (
     <div className="App">
-      <button onClick={toggle}>{esActivo ? 'Desactivar' : 'Activar'}</button>
+      <button onClick={handleClick}>Click {state.click}</button>
+      <input type="text" onChange={onChange} />
+      <label>{state.descripcion}</label>
     </div>
   );
 }
