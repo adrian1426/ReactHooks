@@ -2,24 +2,26 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [click, setClick] = useState(0);
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+  const handleMove = e => {
+    setMouseX(e.clientX);
+    setMouseY(e.clientY);
+  };
 
   useEffect(() => {
-    console.log('dentro de useEffet, ', click);
-    console.log('%c-----------------------------', 'color:green');
+    window.addEventListener('mousemove', handleMove);
     return () => {
-      //componentWillUnmount
-      console.log('return de useEffect: ', click);
+      window.removeEventListener('mousemove', handleMove);
     };
   });
 
-  const handleClick = () => {
-    setClick(click + 1);
-  };
-
   return (
     <div className="App">
-      <button onClick={handleClick}>Click {click}</button>
+      <label>
+        X: {mouseX} | Y: {mouseY}
+      </label>
     </div>
   );
 }
