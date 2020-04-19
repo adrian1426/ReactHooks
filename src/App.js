@@ -1,41 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useReducer } from 'react';
 import './App.css';
 
-function App() {
-  const [name, setName] = useState('');
-  const [productos, setProductos] = useState([]);
-  const refInput = useRef();
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return {
+        ...state,
+        count: state.count + 1
+      }
+    case 'DECREMENT':
+      return {
+        ...state,
+        count: state.count - 1
+      }
+    case 'SET_TITLE':
+      return {
+        ...state,
+        title: action.title
+      }
+    default:
+      return state;
+  }
+};
 
-  const handleInput = e => {
-    setName(e.target.value)
+function App() {
+  const [state, dispatch] = useReducer(reducer, {
+    count: 0,
+    title: 'Hola'
+  });
+
+  const increment = () => {
+    dispatch({ type: 'INCREMENT' });
   };
 
-  useEffect(() => {
-    //debounce
-    setTimeout(() => {
-      if (name === refInput.current.value) {
-        fetch(`https://universidad-react-api-test.luxfenix.now.sh/products?name=${name}`)
-          .then(res => res.json())
-          .then(data => setProductos(data.products));
-      }
-    }, 600);
-  }, [name]);
+  const decrement = () => {
+    dispatch({ type: 'DECREMENT' });
+  };
+
+  const handleInput = e => {
+    dispatch({ type: 'SET_TITLE', title: e.target.value });
+  };
+
 
   return (
     <div className="App">
       <input
         type='text'
         placeholder='ingresa tu búsqueda'
-        ref={refInput}
         onChange={handleInput}
       />
-      <ul>
-        {
-          productos.map((product, i) => (
-            <li key={i}>{product.name}</li>
-          ))
-        }
-      </ul>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+      <h1>{state.count} - {state.title}</h1>
     </div>
   );
 }
