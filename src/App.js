@@ -3,22 +3,24 @@ import './App.css';
 
 function App() {
   const [click, setClick] = useState(0);
+  const [emoji, setEmogi] = useState('😀');
 
   useEffect(() => {
-    console.log('dentro de useEffect: ', click);
-    console.log('----------------------------------');
-    return () => {
-      console.log('dentro de return: ', click);
-    };
-  });
+    alert('useEffect');
+  }, [emoji]);
 
-  const addClick = () => {
-    setClick(click + 1);
+  const addClick = () => setClick(click + 1);
+
+  const toggleEmogi = () => {
+    const nextEmogi = emoji === '😀' ? '🍔' : '😀';
+    setEmogi(nextEmogi);
   };
 
   return (
     <div className="App">
       <button onClick={addClick}>agregar {click} </button>
+      <button onClick={toggleEmogi}>Alternar emoji</button>
+      <h1>{emoji}</h1>
     </div>
   );
 }
