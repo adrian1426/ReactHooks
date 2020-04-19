@@ -2,25 +2,26 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [click, setClick] = useState(0);
-  const [emoji, setEmogi] = useState('😀');
+  const [users, setUsers] = useState([]);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    alert('useEffect');
-  }, [emoji]);
-
-  const addClick = () => setClick(click + 1);
-
-  const toggleEmogi = () => {
-    const nextEmogi = emoji === '😀' ? '🍔' : '😀';
-    setEmogi(nextEmogi);
-  };
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((res) => res.json())
+      .then((user) => {
+        setUsers(user);
+        setFetching(false);
+      });
+  }, []);
 
   return (
     <div className="App">
-      <button onClick={addClick}>agregar {click} </button>
-      <button onClick={toggleEmogi}>Alternar emoji</button>
-      <h1>{emoji}</h1>
+      {fetching && <h1>Cargando...</h1>}
+      <ul>
+        {users.map((usr, i) => (
+          <li key={i}>{usr.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
