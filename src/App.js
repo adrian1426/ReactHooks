@@ -1,27 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [fetching, setFetching] = useState(true);
+  const [add, setAdd] = useState(0);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((res) => res.json())
-      .then((user) => {
-        setUsers(user);
-        setFetching(false);
-      });
-  }, []);
+    console.log('useEffect 1');
+  }, [add]);
+
+  useEffect(() => {
+    console.log('useEffect 2');
+  }, [add]);
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect 1');
+  }, [add]);
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect 2');
+  }, [add]);
+
+  const onClickAdd = () => setAdd(add + 1);
 
   return (
     <div className="App">
-      {fetching && <h1>Cargando...</h1>}
-      <ul>
-        {users.map((usr, i) => (
-          <li key={i}>{usr.name}</li>
-        ))}
-      </ul>
+      <button onClick={onClickAdd}>Agregar {add} </button>
     </div>
   );
 }
