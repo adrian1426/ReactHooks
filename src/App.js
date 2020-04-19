@@ -2,17 +2,23 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [click, setClick] = useState(0);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then(users => setUsers(users));
-  }, []);
+    console.log('dentro de useEffect: ', click);
+    console.log('----------------------------------');
+    return () => {
+      console.log('dentro de return: ', click);
+    };
+  });
+
+  const addClick = () => {
+    setClick(click + 1);
+  };
 
   return (
     <div className="App">
-      <button>ADD</button>
+      <button onClick={addClick}>agregar {click} </button>
     </div>
   );
 }
