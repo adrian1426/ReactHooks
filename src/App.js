@@ -1,46 +1,38 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
-const FancyInput = forwardRef((props, ref) => {
-  const inputHijo = useRef();
-  const [text, setText] = useState('*****');
-
-  useImperativeHandle(ref, () => ({
-    dispatchAlert: () => {
-      alert('Hola');
-    },
-    setParragraph: (message) => {
-      setText(message);
-    },
-    focusInput: () => {
-      inputHijo.current.focus();
-    }
-  }));
-
+const Counter = React.memo(({ count }) => {
+  console.log('Render <Counter/>');
   return (
-    <div>
-      <p>{text}</p>
-      <input
-        type='text'
-        placeholder='ingresa tu búsqueda'
-        ref={inputHijo}
-      />
-    </div>
+    <h1>{count}</h1>
   );
+});
 
+const Title = React.memo(({ title }) => {
+  console.log('Render <Title/>');
+  return (
+    <h1>{title}</h1>
+  );
 });
 
 function App() {
-  const fancyInput = useRef();
+  const [title, setTitle] = useState('');
+  const [count, setCount] = useState(0);
 
-  const handleClick = () => {
-    fancyInput.current.setParragraph('desde App padre');
+  const handleInput = e => {
+    setTitle(e.target.value);
+  };
+
+  const handleAdd = () => {
+    setCount(count + 1);
   };
 
   return (
     <div className="App">
-      <FancyInput ref={fancyInput} />
-      <button onClick={handleClick}>Dispatch</button>
+      <input type='text' onChange={handleInput} />
+      <button onClick={handleAdd}>Dispatch</button>
+      <Counter count={count} />
+      <Title title={title} />
     </div>
   );
 }
