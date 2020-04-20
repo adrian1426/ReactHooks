@@ -15,6 +15,17 @@ const Title = React.memo(({ title }) => {
   );
 });
 
+const TitleNested = React.memo(({ info }) => {
+  console.log('Render <TitleNested/>');
+  return (
+    <h1>{info.title}</h1>
+  );
+}, (prevProps, nextProps) => {
+  console.log(prevProps, nextProps);
+  return prevProps.info.title === nextProps.info.title;
+});
+
+
 function App() {
   const [title, setTitle] = useState('');
   const [count, setCount] = useState(0);
@@ -33,6 +44,9 @@ function App() {
       <button onClick={handleAdd}>Dispatch</button>
       <Counter count={count} />
       <Title title={title} />
+      <TitleNested info={{
+        title
+      }} />
     </div>
   );
 }
