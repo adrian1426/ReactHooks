@@ -1,52 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 
-const Counter = React.memo(({ count }) => {
-  console.log('Render <Counter/>');
+const getRandomColor = () => `#` + Math.random().toString(16).slice(2, 8);
+
+const Button = React.memo(({ callback, children }) => {
+  const color = getRandomColor();
+  const styles = {
+    padding: '1em',
+    fontSize: '20px',
+    background: color
+  };
+
   return (
-    <h1>{count}</h1>
+    <button style={styles} onClick={callback}>
+      {children}
+    </button>
   );
 });
-
-const Title = React.memo(({ title }) => {
-  console.log('Render <Title/>');
-  return (
-    <h1>{title}</h1>
-  );
-});
-
-const TitleNested = React.memo(({ info }) => {
-  console.log('Render <TitleNested/>');
-  return (
-    <h1>{info.title}</h1>
-  );
-}, (prevProps, nextProps) => {
-  console.log(prevProps, nextProps);
-  return prevProps.info.title === nextProps.info.title;
-});
-
 
 function App() {
-  const [title, setTitle] = useState('');
-  const [count, setCount] = useState(0);
+  const [a, setA] = useState(0);
 
-  const handleInput = e => {
-    setTitle(e.target.value);
-  };
-
-  const handleAdd = () => {
-    setCount(count + 1);
-  };
+  const incrementA = useCallback(() => {
+    setA(a => a + 1);
+  }, []);
 
   return (
     <div className="App">
-      <input type='text' onChange={handleInput} />
-      <button onClick={handleAdd}>Dispatch</button>
-      <Counter count={count} />
-      <Title title={title} />
-      <TitleNested info={{
-        title
-      }} />
+      <Button callback={incrementA}>Inrementio</Button>
+      <h1>{a}</h1>
     </div>
   );
 }
