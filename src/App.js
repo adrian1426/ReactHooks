@@ -1,57 +1,46 @@
-import React, { useReducer } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import './App.css';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return {
-        ...state,
-        count: state.count + 1
-      }
-    case 'DECREMENT':
-      return {
-        ...state,
-        count: state.count - 1
-      }
-    case 'SET_TITLE':
-      return {
-        ...state,
-        title: action.title
-      }
-    default:
-      return state;
-  }
-};
+const FancyInput = forwardRef((props, ref) => {
+  const inputHijo = useRef();
+  const [text, setText] = useState('*****');
 
-function App() {
-  const [state, dispatch] = useReducer(reducer, {
-    count: 0,
-    title: 'Hola'
-  });
-
-  const increment = () => {
-    dispatch({ type: 'INCREMENT' });
-  };
-
-  const decrement = () => {
-    dispatch({ type: 'DECREMENT' });
-  };
-
-  const handleInput = e => {
-    dispatch({ type: 'SET_TITLE', title: e.target.value });
-  };
-
+  useImperativeHandle(ref, () => ({
+    dispatchAlert: () => {
+      alert('Hola');
+    },
+    setParragraph: (message) => {
+      setText(message);
+    },
+    focusInput: () => {
+      inputHijo.current.focus();
+    }
+  }));
 
   return (
-    <div className="App">
+    <div>
+      <p>{text}</p>
       <input
         type='text'
         placeholder='ingresa tu búsqueda'
-        onChange={handleInput}
+        ref={inputHijo}
       />
-      <button onClick={increment}>+</button>
-      <button onClick={decrement}>-</button>
-      <h1>{state.count} - {state.title}</h1>
+    </div>
+  );
+
+});
+
+function App() {
+  const fancyInput = useRef();
+
+  const handleClick = () => {
+    fancyInput.current.setParragraph('desde App padre');
+  };
+
+  return (
+    <div className="App">
+      <FancyInput ref={fancyInput} />
+      <button onClick={handleClick}>Dispatch</button>
     </div>
   );
 }
